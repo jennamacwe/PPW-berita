@@ -771,6 +771,90 @@ with dataset:
     st.write("* Tanggal Berita : Fitur ini menunjukkan kapan berita tersebut diterbitkan berupa tanggal dan waktu")
     st.write("* Kategori Berita : Label yang menunjukkan apakah berita terkait Politik atau Gaya Hidup.")
 
+with prepro:
+    st.write("### Preprocessing Dataset")
+
+    data['Kategori'] = data[4].map({'Politik': 0, 'Gaya Hidup': 1})
+
+    st.write("***1. Cleansing***")
+
+    def remove_url(data_berita):
+        url = re.compile(r'https?://\S+|www\.S+')
+        return url.sub(r'', data_berita)
+
+    def remove_html(data_berita):
+        html = re.compile(r'<.#?>')
+        return html.sub(r'', data_berita)
+
+    def remove_emoji(data_berita):
+        emoji_pattern = re.compile("[" 
+                                   u"\U0001F600-\U0001F64F" 
+                                   u"\U0001F300-\U0001F5FF"  
+                                   u"\U0001F680-\U0001F6FF"  
+                                   u"\U0001F1E0-\U0001F1FF" 
+                                   "]+", flags=re.UNICODE)
+        return emoji_pattern.sub(r'', data_berita)
+
+    def remove_numbers(data_berita):
+        return re.sub(r'\d+', '', data_berita)
+
+    def remove_symbols(data_berita):
+        return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
+    
+
+    data['cleansing'] = data[2].apply(lambda x: remove_url(x))
+    data['cleansing'] = data['cleansing'].apply(lambda x: remove_html(x))
+    data['cleansing'] = data['cleansing'].apply(lambda x: remove_emoji(x))
+    data['cleansing'] = data['cleansing'].apply(lambda x: remove_symbols(x))
+    data['cleansing'] = data['cleansing'].apply(lambda x: remove_numbers(x))
+
+    # st.write("CLEANSING")
+
+    st.dataframe(data['cleansing'])
+
+    st.write("***2. Case folding***")
+
+    # def case_folding(text):
+    #     return text.lower() if isinstance(text, str) else text
+
+    def case_folding(text):
+        if isinstance(text, str):
+            lowercase_text = text.lower()
+            return lowercase_text
+        else :
+            return text
+        
+    data['case_folding'] = data['cleansing'].apply(case_folding)
+
+    st.dataframe(data['case_folding'])
+
+    st.write("***3. Tokenization***")
+
+    def tokenize(text):
+        tokens = text.split()
+        return tokens
+
+    data['tokenize'] = data['case_folding'].apply(tokenize)
+
+    # st.write("TOKENISASI")
+
+    st.dataframe(data['tokenize'])
+
+
+    st.write("***3. Stop Words***")
+
+    nltk.download('stopwords')
+    stop_words = stopwords.words('indonesian')
+
+    def remove_stopwords(text):
+        return [word for word in text.split() if word not in stop_words]
+    
+    # Asumsi 'data' adalah dataframe, dengan kolom 'tokenize' yang berisi teks yang sudah di-tokenisasi
+    data['stopword_removal'] = data['tokenize'].apply(lambda x: ' '.join(remove_stopwords(x)))
+
+    # Menampilkan dataframe setelah penghapusan stopwords
+    st.dataframe(data['stopword_removal'])
+
 # with prepro:
 #     st.write("### Preprocessing Dataset")
 
