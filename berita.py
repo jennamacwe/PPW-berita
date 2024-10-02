@@ -1,21 +1,21 @@
-# import streamlit as st
-# import pandas as pd
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.metrics import accuracy_score
-# from sklearn.model_selection import train_test_split
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# import pickle
-# import re
+import streamlit as st
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+import pickle
+import re
 
-# # stopwords
-# import nltk
-# from nltk.corpus import stopwords
+# stopwords
+import nltk
+from nltk.corpus import stopwords
 
-# # stemming
-# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+# stemming
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-# # split data
-# from sklearn.model_selection import train_test_split
+# split data
+from sklearn.model_selection import train_test_split
 
 # st.title("Pencarian dan Penambangan WEB")
 # st.write("Nama  : Jennatul Macwe ")
