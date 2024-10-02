@@ -111,10 +111,16 @@ with prepro:
 
     st.write("### Split Data")
 
-    x = data[1].apply(stemming).values  # Isi Berita yang sudah di-stemming
+    # x = data[1].apply(stemming).values  # Isi Berita yang sudah di-stemming
+    # y = data['Kategori'].values
+
+    # Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.2, random_state=2)
+
+    x = data['Isi Berita'].apply(stemming).values  # Isi Berita yang sudah di-stemming
     y = data['Kategori'].values
 
     Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.2, random_state=2)
+
 
     ####################
     #####################   TF-IDF
