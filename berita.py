@@ -968,7 +968,7 @@ with prepro:
     data1 = pd.read_csv(url1, header=None)
 
     # Menampilkan data
-    st.dataframe(data1['stemming'])
+    st.dataframe(data1)
 
 ############
 
