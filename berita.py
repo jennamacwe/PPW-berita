@@ -120,24 +120,24 @@ with prepro:
     #####################   TF-IDF
     #####################
 
-    # Inisialisasi TF-IDF Vectorizer untuk mengubah teks menjadi representasi numerik berdasarkan frekuensi kata.
-    vect = TfidfVectorizer(min_df=1) 
+    # # Inisialisasi TF-IDF Vectorizer untuk mengubah teks menjadi representasi numerik berdasarkan frekuensi kata.
+    # vect = TfidfVectorizer(min_df=1) 
 
-    # Melakukan fit pada data Xtrain dan langsung mentransformasikan teks menjadi matriks TF-IDF.
-    X = vect.fit_transform(Xtrain)  
+    # # Melakukan fit pada data Xtrain dan langsung mentransformasikan teks menjadi matriks TF-IDF.
+    # X = vect.fit_transform(Xtrain)  
     
-    # Melakukan transformasi kembali pada Xtrain menjadi array (fit sudah dilakukan sebelumnya).
-    X_array = vect.transform(Xtrain)  
+    # # Melakukan transformasi kembali pada Xtrain menjadi array (fit sudah dilakukan sebelumnya).
+    # X_array = vect.transform(Xtrain)  
 
-    # Membuka file untuk menyimpan model vectorizer dalam format pkl.
-    with open('tfidf_vectorizer.pkl', 'wb') as f:  
-        pickle.dump(vect, f) 
+    # # Membuka file untuk menyimpan model vectorizer dalam format pkl.
+    # with open('tfidf_vectorizer.pkl', 'wb') as f:  
+    #     pickle.dump(vect, f) 
         
-    # vect = TfidfVectorizer()
-    # Xtrain_vect = vect.fit_transform(Xtrain)
+    vect = TfidfVectorizer(min_df=1)
+    Xtrain_vect = vect.fit_transform(Xtrain)
 
-    # with open('tfidf_vectorizer.pkl', 'wb') as f:
-    #     pickle.dump(vect, f)
+    with open('tfidf_vectorizer.pkl', 'wb') as f:
+        pickle.dump(vect, f)
 
     st.write("Contoh hasil pre-processing Xtrain:", Xtrain[:5])
 
