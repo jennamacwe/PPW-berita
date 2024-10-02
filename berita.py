@@ -374,7 +374,7 @@ def remove_symbols(data_berita):
     data_berita = re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
     return data_berita
 
-df['cleansing'] = df['Isi Berita'].apply(lambda x: remove_url(x))
+df['cleansing'] = df[2].apply(lambda x: remove_url(x))
 df['cleansing'] = df['cleansing'].apply(lambda x: remove_html(x))
 df['cleansing'] = df['cleansing'].apply(lambda x: remove_emoji(x))
 df['cleansing'] = df['cleansing'].apply(lambda x: remove_symbols(x))
