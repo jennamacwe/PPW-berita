@@ -241,8 +241,8 @@ with prepro:
     def stemming(text):
         return ' '.join([stemmer.stem(word) for word in text.split()])
 
-    data['stemming'] = data['stopword_removal'].apply(stemming)
-    st.dataframe(data['stemming'])
+    # data['stemming'] = data['stopword_removal'].apply(stemming)
+    # st.dataframe(data['stemming'])
 
 #########
 
@@ -253,10 +253,10 @@ with prepro:
 
     # st.dataframe(data['stemming'])
 
-    # url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
-    # data1 = pd.read_csv(url1, header=None)
+    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
+    data1 = pd.read_csv(url1, header=None)
 
-    # data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
+    data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
 
     # Menampilkan data
     st.dataframe(data["stemming"])
