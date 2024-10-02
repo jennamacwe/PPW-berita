@@ -975,7 +975,7 @@ with prepro:
     st.write("### Split Data")
 
     x = data1[10].values
-    y = data1['Kategori'].values
+    y = data1[5].values
 
     Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
 
