@@ -121,11 +121,11 @@ with prepro:
     #####################
 
     # Inisialisasi TF-IDF Vectorizer untuk mengubah teks menjadi representasi numerik berdasarkan frekuensi kata.
-    vect = TfidfVectorizer() 
+    vect = TfidfVectorizer(min_df=1) 
 
     # Melakukan fit pada data Xtrain dan langsung mentransformasikan teks menjadi matriks TF-IDF.
     X = vect.fit_transform(Xtrain)  
-
+    
     # Melakukan transformasi kembali pada Xtrain menjadi array (fit sudah dilakukan sebelumnya).
     X_array = vect.transform(Xtrain)  
 
@@ -138,6 +138,9 @@ with prepro:
 
     # with open('tfidf_vectorizer.pkl', 'wb') as f:
     #     pickle.dump(vect, f)
+
+    st.write("Contoh hasil pre-processing Xtrain:", Xtrain[:5])
+
 
 with model:
     st.write("### Logistic Regression")
