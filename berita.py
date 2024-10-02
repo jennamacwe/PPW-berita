@@ -47,7 +47,10 @@ with dataset:
     # Membaca data dari URL
     url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori(1).csv"
     data = pd.read_csv(url, header=None)
-
+    
+    # Mengganti nama kolom
+    data.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita"]
+    
     # Menampilkan data
     st.dataframe(data)
 
