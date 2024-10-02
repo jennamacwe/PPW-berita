@@ -949,29 +949,16 @@ with prepro:
 
     st.write("***4. Stemming***")
 
-#     factory = StemmerFactory()
-#     stemmer = factory.create_stemmer()
-
-#     def stemming(text):
-#         return ' '.join([stemmer.stem(word) for word in text])
-
-#########
-
-    # Inisialisasi stemmer
     factory = StemmerFactory()
     stemmer = factory.create_stemmer()
 
-    def parallel_apply(data, func):
-        with mp.Pool(mp.cpu_count()) as pool:
-            result = pool.map(func, data)
-        return result
-
-    # Fungsi stemming
     def stemming(text):
-        return ' '.join([stemmer.stem(word) for word in text.split()])
+        return ' '.join([stemmer.stem(word) for word in text])
 
-    # Terapkan stemming menggunakan paralel
-    data['stemming'] = parallel_apply(data['stopword_removal'].tolist(), stemming)
+#########
+
+    data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
+
 
     # st.write("STEMING")
 
