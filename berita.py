@@ -843,12 +843,16 @@ with prepro:
 
     st.write("***3. Stop Words***")
 
+    # Download stopwords (pastikan hanya perlu sekali saja)
     nltk.download('stopwords')
+
+    # Mengambil daftar stopwords dalam bahasa Indonesia
     stop_words = stopwords.words('indonesian')
 
+    # Fungsi untuk menghapus stopwords
     def remove_stopwords(text):
-        return [word for word in text.split() if word not in stop_words]
-    
+        return [word for word in text if word not in stop_words]
+
     # Asumsi 'data' adalah dataframe, dengan kolom 'tokenize' yang berisi teks yang sudah di-tokenisasi
     data['stopword_removal'] = data['tokenize'].apply(lambda x: ' '.join(remove_stopwords(x)))
 
