@@ -92,7 +92,7 @@ with prepro:
         return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
     
 
-    data['cleansing'] = data[2].apply(lambda x: remove_url(x))
+    data['cleansing'] = data['isi berita'].apply(lambda x: remove_url(x))
     data['cleansing'] = data['cleansing'].apply(lambda x: remove_html(x))
     data['cleansing'] = data['cleansing'].apply(lambda x: remove_emoji(x))
     data['cleansing'] = data['cleansing'].apply(lambda x: remove_symbols(x))
