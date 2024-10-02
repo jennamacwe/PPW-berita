@@ -466,6 +466,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 import re
+import multiprocessing as mp
 
 #stopwords
 import nltk
@@ -478,7 +479,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from sklearn.model_selection import train_test_split
 
 # Membaca data dari URL
-url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
+url = "C:\\Users\\lenovo\\Documents\\PPW\\Tugas-Crawling-Data-Berita-2-kategori.csv"
 data = pd.read_csv(url, header=None)
 
 # Menampilkan data
@@ -568,12 +569,17 @@ st.dataframe(data)
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
 
+def parallel_apply(data, func):
+    with mp.Pool(mp.cpu_count()) as pool:
+        result = pool.map(func, data)
+    return result
+
 # Fungsi stemming
 def stemming(text):
-    return [stemmer.stem(word) for word in text]
+    return ' '.join([stemmer.stem(word) for word in text.split()])
 
-# Terapkan stemming setelah stopwords removal
-data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
+# Terapkan stemming menggunakan paralel
+data['stemming'] = parallel_apply(data['stopword_removal'].tolist(), stemming)
 
 st.write("STEMING")
 
