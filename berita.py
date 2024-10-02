@@ -968,13 +968,13 @@ with prepro:
     data1 = pd.read_csv(url1, header=None)
 
     # Menampilkan data
-    st.dataframe(data1)
+    st.dataframe(data1[10])
 
 ############
 
     st.write("### Split Data")
 
-    x = data1['stemming'].values
+    x = data1[10].values
     y = data1['Kategori'].values
 
     Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
