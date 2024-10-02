@@ -957,19 +957,25 @@ with prepro:
 
 #########
 
-    data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
+    # data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
 
 
-    # st.write("STEMING")
+    # # st.write("STEMING")
 
-    st.dataframe(data['stemming'])
+    # st.dataframe(data['stemming'])
+
+    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming.csv"
+    data1 = pd.read_csv(url, header=None)
+
+    # Menampilkan data
+    st.dataframe(data1['stemming'])
 
 ############
 
     st.write("### Split Data")
 
-    x = data['stemming'].values
-    y = data['Kategori'].values
+    x = data1['stemming'].values
+    y = data1['Kategori'].values
 
     Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
 
