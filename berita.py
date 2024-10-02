@@ -337,20 +337,21 @@ from sklearn.model_selection import train_test_split
 #         else:
 #             st.write("Harap masukkan isi berita.")
 
+
+################################################################################################
+
 # Judul Aplikasi
 st.title("Prediksi Kategori Berita")
 
 # Memuat dataset
-url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori(1).csv"
-
-column_names = ['NO', 'Judul Berita', 'Isi Berita', 'Tanggal Berita', 'Kategori Berita']
-df = pd.read_csv(url, names=column_names, header=None)
+url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
+df = pd.read_csv(url, header=None)
 
 # Menampilkan data
 # st.dataframe(data)
 # df = pd.read_csv("Tugas-Crawling-Data-Berita-2-kategori.csv")
 
-df['Kategori'] = df['Kategori Berita'].map({'Politik': 0, 'Gaya Hidup': 1})
+df['Kategori'] = df[4].map({'Politik': 0, 'Gaya Hidup': 1})
 
 # Fungsi-fungsi preprocessing
 def remove_url(data_berita):
