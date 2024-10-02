@@ -606,6 +606,111 @@
 
 #########################################################################################
 
+# import streamlit as st
+# import pandas as pd
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.metrics import accuracy_score
+# from sklearn.model_selection import train_test_split
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# import pickle
+# import re
+# import multiprocessing as mp
+
+# # Stopwords
+# import nltk
+# from nltk.corpus import stopwords
+
+# # Stemming
+# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+
+# # Memuat model dan vectorizer yang telah disimpan
+# with open('tfidf_vectorizer.pkl', 'rb') as f:
+#     vect = pickle.load(f)
+
+# with open('logistic_model.pkl', 'rb') as f:
+#     model = pickle.load(f)
+
+# # Fungsi-fungsi preprocessing yang sudah ada
+# def remove_url(data_berita):
+#     url = re.compile(r'https?://\S+|www\.S+')
+#     return url.sub(r'', data_berita)
+
+# def remove_html(data_berita):
+#     html = re.compile(r'<.*?>')
+#     return html.sub(r'', data_berita)
+
+# def remove_emoji(data_berita):
+#     emoji_pattern = re.compile("[" 
+#         u"\U0001F600-\U0001F64F"
+#         u"\U0001F300-\U0001F5FF"
+#         u"\U0001F680-\U0001F6FF"
+#         u"\U0001F1E0-\U0001F1FF""]+", flags=re.UNICODE)
+#     return emoji_pattern.sub(r'', data_berita)
+
+# def remove_numbers(data_berita):
+#     return re.sub(r'\d+', '', data_berita)
+
+# def remove_symbols(data_berita):
+#     return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
+
+# def case_folding(text):
+#     return text.lower() if isinstance(text, str) else text
+
+# def tokenize(text):
+#     return text.split()
+
+# # Mengunduh stopwords
+# nltk.download('stopwords')
+# stop_words = stopwords.words('indonesian')
+
+# def remove_stopwords(text):
+#     return [word for word in text if word not in stop_words]
+
+# # Inisialisasi stemmer
+# factory = StemmerFactory()
+# stemmer = factory.create_stemmer()
+
+# def stemming(text):
+#     return ' '.join([stemmer.stem(word) for word in text.split()])
+
+# # Fungsi untuk melakukan preprocessing lengkap pada input pengguna
+# def preprocess_text(input_text):
+#     # Apply preprocessing steps in sequence
+#     input_text = remove_url(input_text)
+#     input_text = remove_html(input_text)
+#     input_text = remove_emoji(input_text)
+#     input_text = remove_symbols(input_text)
+#     input_text = remove_numbers(input_text)
+#     input_text = case_folding(input_text)
+#     tokens = tokenize(input_text)
+#     no_stopwords = ' '.join(remove_stopwords(tokens))
+#     stemmed_text = stemming(no_stopwords)
+#     return stemmed_text
+
+# # Streamlit App
+# st.title("News Classification")
+
+# # Input berita dari pengguna
+# user_input = st.text_area("Masukkan teks berita di sini:")
+
+# # Proses input pengguna
+# if st.button("Prediksi Kategori Berita"):
+#     if user_input:
+#         # Lakukan preprocessing pada input pengguna
+#         preprocessed_input = preprocess_text(user_input)
+        
+#         # Transformasikan input yang sudah dipreprocessing menggunakan TF-IDF vectorizer
+#         transformed_input = vect.transform([preprocessed_input])
+        
+#         # Lakukan prediksi menggunakan model Logistic Regression
+#         prediction = model.predict(transformed_input)
+        
+#         # Tampilkan hasil prediksi
+#         label_mapping = {0: "Politik", 1: "Gaya Hidup"}
+#         st.write(f"Kategori Prediksi: {label_mapping[prediction[0]]}")
+#     else:
+#         st.write("Harap masukkan teks berita untuk diprediksi.")
+
 import streamlit as st
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -614,99 +719,191 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 import re
-import multiprocessing as mp
 
-# Stopwords
+# stopwords
 import nltk
 from nltk.corpus import stopwords
 
-# Stemming
+# stemming
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-# Memuat model dan vectorizer yang telah disimpan
-with open('tfidf_vectorizer.pkl', 'rb') as f:
-    vect = pickle.load(f)
+# split data
+from sklearn.model_selection import train_test_split
 
-with open('logistic_model.pkl', 'rb') as f:
-    model = pickle.load(f)
+st.title("Pencarian dan Penambangan WEB")
+st.write("Nama  : Jennatul Macwe ")
+st.write("Nim   : 210411100151 ")
+st.write("Kelas : Pencarian dan Penambangan WEB B ")
 
-# Fungsi-fungsi preprocessing yang sudah ada
-def remove_url(data_berita):
-    url = re.compile(r'https?://\S+|www\.S+')
-    return url.sub(r'', data_berita)
+data_set_description, dataset, prepro, model, Input = st.tabs(["Deskripsi Data Set", "Dataset", "Pre-processing", "Model", "Klasifikasi"])
 
-def remove_html(data_berita):
-    html = re.compile(r'<.*?>')
-    return html.sub(r'', data_berita)
+with data_set_description:
+    st.write("### Deskripsi Dataset")
+    st.write("Dataset ini berisi berita yang dikelompokkan ke dalam dua kategori, yaitu 'Politik' dan 'Gaya Hidup'.")
+    st.write("***Jumlah Data :*** 100 baris data dengan 5 kolom")
+    st.write("***Dataset ini TIDAK MEMILIKI Missing Values*** yang berarti bahwa setiap bagian data pada dataset lengkap dengan informasi.")
 
-def remove_emoji(data_berita):
-    emoji_pattern = re.compile("[" 
-        u"\U0001F600-\U0001F64F"
-        u"\U0001F300-\U0001F5FF"
-        u"\U0001F680-\U0001F6FF"
-        u"\U0001F1E0-\U0001F1FF""]+", flags=re.UNICODE)
-    return emoji_pattern.sub(r'', data_berita)
+    st.write("### Penjelasan Fitur :")
+    st.write("Jumlah Fitur : 4")
+    st.write("* Judul Berita : Judul dari setiap berita")
+    st.write("* Isi Berita : Konten utama dari berita. Kolom ini memuat informasi lengkap tentang peristiwa, fakta, atau opini yang dibahas dalam berita. Fitur ini diproses lebih lanjut untuk analisis teks.")
+    st.write("* Tanggal Berita : Fitur ini menunjukkan kapan berita tersebut diterbitkan berupa tanggal dan waktu")
+    st.write("* Kategori Berita : Fitur ini merupakan label atau kategori dari setiap berita. Kategori ini menunjukkan apakah berita tersebut berkaitan dengan Politik atau Gaya Hidup. Fitur ini penting karena merupakan target yang akan diprediksi dalam model klasifikasi. Kolom kategori ini nantinya akan diubah menjadi nilai numerik (misalnya, 0 untuk Politik dan 1 untuk Gaya Hidup).")
 
-def remove_numbers(data_berita):
-    return re.sub(r'\d+', '', data_berita)
+    st.write("### Sumber Dataset : https://timesindonesia.co.id/#google_vignette")
+    st.write("Dataset ini berisi kumpulan berita yang diambil dari situs TIMES Indonesia, sebuah portal berita yang memuat berbagai artikel terkait berbagai topik, termasuk politik dan gaya hidup. Data ini dikumpulkan melalui proses web crawling menggunakan Python, yang merupakan teknik pengumpulan data secara otomatis dari situs web.")
+    st.write("")
 
-def remove_symbols(data_berita):
-    return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
+with dataset:
+    st.write("### Dataset Berita Times Indonesia Kategori Politik dan Gaya Hidup")
 
-def case_folding(text):
-    return text.lower() if isinstance(text, str) else text
+    # Membaca data dari URL
+    url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
+    data = pd.read_csv(url, header=None)
 
-def tokenize(text):
-    return text.split()
+    # Menampilkan data
+    st.dataframe(data)
 
-# Mengunduh stopwords
-nltk.download('stopwords')
-stop_words = stopwords.words('indonesian')
+    st.write("### Penjelasan Fitur :")
+    st.write("Jumlah Fitur : 4")
+    st.write("* Judul Berita : Judul dari setiap berita")
+    st.write("* Isi Berita : Konten utama dari berita. Kolom ini memuat informasi lengkap tentang peristiwa, fakta, atau opini yang dibahas dalam berita.")
+    st.write("* Tanggal Berita : Fitur ini menunjukkan kapan berita tersebut diterbitkan berupa tanggal dan waktu")
+    st.write("* Kategori Berita : Label yang menunjukkan apakah berita terkait Politik atau Gaya Hidup.")
 
-def remove_stopwords(text):
-    return [word for word in text if word not in stop_words]
+# with prepro:
+#     st.write("### Preprocessing Dataset")
 
-# Inisialisasi stemmer
-factory = StemmerFactory()
-stemmer = factory.create_stemmer()
+#     data['Kategori'] = data[4].map({'Politik': 0, 'Gaya Hidup': 1})
 
-def stemming(text):
-    return ' '.join([stemmer.stem(word) for word in text.split()])
+#     st.write("***1. Cleansing***")
 
-# Fungsi untuk melakukan preprocessing lengkap pada input pengguna
-def preprocess_text(input_text):
-    # Apply preprocessing steps in sequence
-    input_text = remove_url(input_text)
-    input_text = remove_html(input_text)
-    input_text = remove_emoji(input_text)
-    input_text = remove_symbols(input_text)
-    input_text = remove_numbers(input_text)
-    input_text = case_folding(input_text)
-    tokens = tokenize(input_text)
-    no_stopwords = ' '.join(remove_stopwords(tokens))
-    stemmed_text = stemming(no_stopwords)
-    return stemmed_text
+#     def remove_url(data_berita):
+#         url = re.compile(r'https?://\S+|www\.S+')
+#         return url.sub(r'', data_berita)
 
-# Streamlit App
-st.title("News Classification")
+#     def remove_html(data_berita):
+#         html = re.compile(r'<.#?>')
+#         return html.sub(r'', data_berita)
 
-# Input berita dari pengguna
-user_input = st.text_area("Masukkan teks berita di sini:")
+#     def remove_emoji(data_berita):
+#         emoji_pattern = re.compile("[" 
+#                                    u"\U0001F600-\U0001F64F" 
+#                                    u"\U0001F300-\U0001F5FF"  
+#                                    u"\U0001F680-\U0001F6FF"  
+#                                    u"\U0001F1E0-\U0001F1FF" 
+#                                    "]+", flags=re.UNICODE)
+#         return emoji_pattern.sub(r'', data_berita)
 
-# Proses input pengguna
-if st.button("Prediksi Kategori Berita"):
-    if user_input:
-        # Lakukan preprocessing pada input pengguna
-        preprocessed_input = preprocess_text(user_input)
+#     def remove_numbers(data_berita):
+#         return re.sub(r'\d+', '', data_berita)
+
+#     def remove_symbols(data_berita):
+#         return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
+
+#     st.write("***2. Case folding***")
+
+#     def case_folding(text):
+#         return text.lower() if isinstance(text, str) else text
+
+#     st.write("***3. Tokenization dan Stop Words***")
+
+#     nltk.download('stopwords')
+#     stop_words = stopwords.words('indonesian')
+
+#     def remove_stopwords(text):
+#         return [word for word in text.split() if word not in stop_words]
+
+#     st.write("***4. Stemming***")
+
+#     factory = StemmerFactory()
+#     stemmer = factory.create_stemmer()
+
+#     def stemming(text):
+#         return ' '.join([stemmer.stem(word) for word in text])
+
+#     st.write("### Split Data")
+
+#     x = data[1].apply(stemming).values  # Isi Berita yang sudah di-stemming
+#     y = data['Kategori'].values
+
+#     Xtrain, Xtest, Ytrain, Ytest = train_test_split(x, y, test_size=0.2, random_state=2)
+
+#     ####################
+#     #####################   TF-IDF
+#     #####################
+
+#     # # Inisialisasi TF-IDF Vectorizer untuk mengubah teks menjadi representasi numerik berdasarkan frekuensi kata.
+#     # vect = TfidfVectorizer() 
+
+#     # # Melakukan fit pada data Xtrain dan langsung mentransformasikan teks menjadi matriks TF-IDF.
+#     # X = vect.fit_transform(Xtrain)  
+
+#     # # Melakukan transformasi kembali pada Xtrain menjadi array (fit sudah dilakukan sebelumnya).
+#     # X_array = vect.transform(Xtrain)  
+
+#     # # Membuka file untuk menyimpan model vectorizer dalam format pkl.
+#     # with open('tfidf_vectorizer.pkl', 'wb') as f:  
+#     #     pickle.dump(vect, f) 
         
-        # Transformasikan input yang sudah dipreprocessing menggunakan TF-IDF vectorizer
-        transformed_input = vect.transform([preprocessed_input])
-        
-        # Lakukan prediksi menggunakan model Logistic Regression
-        prediction = model.predict(transformed_input)
-        
-        # Tampilkan hasil prediksi
-        label_mapping = {0: "Politik", 1: "Gaya Hidup"}
-        st.write(f"Kategori Prediksi: {label_mapping[prediction[0]]}")
-    else:
-        st.write("Harap masukkan teks berita untuk diprediksi.")
+#     vect = TfidfVectorizer()
+#     Xtrain_vect = vect.fit_transform(Xtrain)
+
+#     with open('tfidf_vectorizer.pkl', 'wb') as f:
+#         pickle.dump(vect, f)
+
+# with model:
+#     st.write("### Logistic Regression")
+
+#     model = LogisticRegression()
+#     model.fit(Xtrain_vect, Ytrain)
+
+#     with open('logistic_model.pkl', 'wb') as f:
+#         pickle.dump(model, f)
+
+#     Xtest_vect = vect.transform(Xtest)
+#     prediksi = model.predict(Xtest_vect)
+
+#     accuracy = accuracy_score(Ytest, prediksi)
+#     st.write(f'Akurasi Model Logistic Regression: {accuracy * 100:.2f}%')
+
+#     results_lr = pd.DataFrame({'Real Values': Ytest, 'Prediksi': prediksi})
+#     st.dataframe(results_lr)
+
+# with Input:
+#     def load_model_and_vectorizer():
+#         with open('logistic_model.pkl', 'rb') as model_file:
+#             model = pickle.load(model_file)
+
+#         with open('tfidf_vectorizer.pkl', 'rb') as vectorizer_file:
+#             vectorizer = pickle.load(vectorizer_file)
+#         return model, vectorizer
+
+#     def predict_category(berita_input, model, vectorizer):
+#         def preprocessing(berita):
+#             berita = remove_url(berita)
+#             berita = remove_html(berita)
+#             berita = remove_emoji(berita)
+#             berita = remove_symbols(berita)
+#             berita = remove_numbers(berita)
+#             berita = berita.lower()
+#             tokens = berita.split()
+#             tokens = [word for word in tokens if word not in stop_words]
+#             stemming_result = [stemmer.stem(word) for word in tokens]
+#             return ' '.join(stemming_result)
+
+#         preprocessed_berita = preprocessing(berita_input)
+#         berita_vectorized = vectorizer.transform([preprocessed_berita])
+#         prediction = model.predict(berita_vectorized)
+#         return 'Politik' if prediction == 0 else 'Gaya Hidup'
+
+#     st.title("Prediksi Kategori Berita")
+#     user_input = st.text_area("Isi Berita", height=200)
+
+#     if st.button("Prediksi"):
+#         if user_input:
+#             model, vectorizer = load_model_and_vectorizer()
+#             predicted_category = predict_category(user_input, model, vectorizer)
+#             st.write(f"**Kategori berita:** {predicted_category}")
+#         else:
+#             st.write("Harap masukkan isi berita.")
