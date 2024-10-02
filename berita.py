@@ -457,7 +457,155 @@
 # #         else:
 # #             st.write("Harap masukkan isi berita.")
 
-    
+
+
+##############################################################################################
+# import streamlit as st
+# import pandas as pd
+# from sklearn.linear_model import LogisticRegression
+# from sklearn.metrics import accuracy_score
+# from sklearn.model_selection import train_test_split
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# import pickle
+# import re
+# import multiprocessing as mp
+
+# #stopwords
+# import nltk
+# from nltk.corpus import stopwords
+
+# #stemming
+# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+
+# #spit data
+# from sklearn.model_selection import train_test_split
+
+# # Membaca data dari URL
+# url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
+# data = pd.read_csv(url, header=None)
+
+# # Menampilkan data
+# st.dataframe(data)
+
+# data['Kategori'] = data[4].map({'Politik': 0, 'Gaya Hidup': 1})
+# st.dataframe(data)
+
+# def remove_url(data_berita):
+#   url = re.compile(r'https?://\S+|www\.S+')
+#   return url.sub(r'', data_berita)
+
+# def remove_html(data_berita):
+#   html = re.compile(r'<.#?>')
+#   return html.sub(r'', data_berita)
+
+# def remove_emoji(data_berita):
+#   emoji_pattern = re.compile("["
+#       u"\U0001F600-\U0001F64F"
+#       u"\U0001F300-\U0001F5FF"
+#       u"\U0001F680-\U0001F6FF"
+#       u"\U0001F1E0-\U0001F1FF""]+", flags=re.UNICODE)
+#   return emoji_pattern.sub(r'', data_berita)
+
+# def remove_numbers(data_berita):
+#   data_berita = re.sub(r'\d+', '', data_berita)
+#   return data_berita
+
+# def remove_symbols(data_berita):
+#   data_berita = re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
+#   return data_berita
+
+# data['cleansing'] = data[2].apply(lambda x: remove_url(x))
+# data['cleansing'] = data['cleansing'].apply(lambda x: remove_html(x))
+# data['cleansing'] = data['cleansing'].apply(lambda x: remove_emoji(x))
+# data['cleansing'] = data['cleansing'].apply(lambda x: remove_symbols(x))
+# data['cleansing'] = data['cleansing'].apply(lambda x: remove_numbers(x))
+
+# st.write("CLEANSING")
+
+# st.dataframe(data)
+
+# def case_folding(text):
+#     if isinstance(text, str):
+#       lowercase_text = text.lower()
+#       return lowercase_text
+#     else :
+#       return text
+
+# data ['case_folding'] = data['cleansing'].apply(case_folding)
+
+# st.write("CASE FOLDING")
+
+# st.dataframe(data)
+
+# def tokenize(text):
+#     tokens = text.split()
+#     return tokens
+
+# data['tokenize'] = data['case_folding'].apply(tokenize)
+
+# st.write("TOKENISASI")
+
+# st.dataframe(data)
+
+# # Download stopwords (pastikan hanya perlu sekali saja)
+# nltk.download('stopwords')
+
+# # Mengambil daftar stopwords dalam bahasa Indonesia
+# stop_words = stopwords.words('indonesian')
+
+# # Fungsi untuk menghapus stopwords
+# def remove_stopwords(text):
+#     return [word for word in text if word not in stop_words]
+
+# # Asumsi 'data' adalah dataframe, dengan kolom 'tokenize' yang berisi teks yang sudah di-tokenisasi
+# data['stopword_removal'] = data['tokenize'].apply(lambda x: ' '.join(remove_stopwords(x)))
+
+# # Menampilkan dataframe setelah penghapusan stopwords
+# st.dataframe(data)
+
+# st.write("STOPWORD")
+
+# st.dataframe(data)
+
+# # Inisialisasi stemmer
+# factory = StemmerFactory()
+# stemmer = factory.create_stemmer()
+
+# def parallel_apply(data, func):
+#     with mp.Pool(mp.cpu_count()) as pool:
+#         result = pool.map(func, data)
+#     return result
+
+# # Fungsi stemming
+# def stemming(text):
+#     return ' '.join([stemmer.stem(word) for word in text.split()])
+
+# # Terapkan stemming menggunakan paralel
+# data['stemming'] = parallel_apply(data['stopword_removal'].tolist(), stemming)
+
+# st.write("STEMING")
+
+# st.dataframe(data)
+
+# x = data['stemming'].values
+# y = data['Kategori'].values
+
+# Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
+
+# st.write("Xtrain")
+# st.dataframe(Xtrain)
+
+# st.write("Xtest")
+# st.dataframe(Xtest)
+
+# st.write("Ytrain")
+# st.dataframe(Ytrain)
+
+# st.write("Ytest")
+# st.dataframe(Ytest)
+
+#########################################################################################
+
 import streamlit as st
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -468,136 +616,97 @@ import pickle
 import re
 import multiprocessing as mp
 
-#stopwords
+# Stopwords
 import nltk
 from nltk.corpus import stopwords
 
-#stemming
+# Stemming
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-#spit data
-from sklearn.model_selection import train_test_split
+# Memuat model dan vectorizer yang telah disimpan
+with open('tfidf_vectorizer.pkl', 'rb') as f:
+    vect = pickle.load(f)
 
-# Membaca data dari URL
-url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
-data = pd.read_csv(url, header=None)
+with open('logistic_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-# Menampilkan data
-st.dataframe(data)
-
-data['Kategori'] = data[4].map({'Politik': 0, 'Gaya Hidup': 1})
-st.dataframe(data)
-
+# Fungsi-fungsi preprocessing yang sudah ada
 def remove_url(data_berita):
-  url = re.compile(r'https?://\S+|www\.S+')
-  return url.sub(r'', data_berita)
+    url = re.compile(r'https?://\S+|www\.S+')
+    return url.sub(r'', data_berita)
 
 def remove_html(data_berita):
-  html = re.compile(r'<.#?>')
-  return html.sub(r'', data_berita)
+    html = re.compile(r'<.*?>')
+    return html.sub(r'', data_berita)
 
 def remove_emoji(data_berita):
-  emoji_pattern = re.compile("["
-      u"\U0001F600-\U0001F64F"
-      u"\U0001F300-\U0001F5FF"
-      u"\U0001F680-\U0001F6FF"
-      u"\U0001F1E0-\U0001F1FF""]+", flags=re.UNICODE)
-  return emoji_pattern.sub(r'', data_berita)
+    emoji_pattern = re.compile("[" 
+        u"\U0001F600-\U0001F64F"
+        u"\U0001F300-\U0001F5FF"
+        u"\U0001F680-\U0001F6FF"
+        u"\U0001F1E0-\U0001F1FF""]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', data_berita)
 
 def remove_numbers(data_berita):
-  data_berita = re.sub(r'\d+', '', data_berita)
-  return data_berita
+    return re.sub(r'\d+', '', data_berita)
 
 def remove_symbols(data_berita):
-  data_berita = re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
-  return data_berita
-
-data['cleansing'] = data[2].apply(lambda x: remove_url(x))
-data['cleansing'] = data['cleansing'].apply(lambda x: remove_html(x))
-data['cleansing'] = data['cleansing'].apply(lambda x: remove_emoji(x))
-data['cleansing'] = data['cleansing'].apply(lambda x: remove_symbols(x))
-data['cleansing'] = data['cleansing'].apply(lambda x: remove_numbers(x))
-
-st.write("CLEANSING")
-
-st.dataframe(data)
+    return re.sub(r'[^a-zA-Z0-9\s]', '', data_berita)
 
 def case_folding(text):
-    if isinstance(text, str):
-      lowercase_text = text.lower()
-      return lowercase_text
-    else :
-      return text
-
-data ['case_folding'] = data['cleansing'].apply(case_folding)
-
-st.write("CASE FOLDING")
-
-st.dataframe(data)
+    return text.lower() if isinstance(text, str) else text
 
 def tokenize(text):
-    tokens = text.split()
-    return tokens
+    return text.split()
 
-data['tokenize'] = data['case_folding'].apply(tokenize)
-
-st.write("TOKENISASI")
-
-st.dataframe(data)
-
-# Download stopwords (pastikan hanya perlu sekali saja)
+# Mengunduh stopwords
 nltk.download('stopwords')
-
-# Mengambil daftar stopwords dalam bahasa Indonesia
 stop_words = stopwords.words('indonesian')
 
-# Fungsi untuk menghapus stopwords
 def remove_stopwords(text):
     return [word for word in text if word not in stop_words]
-
-# Asumsi 'data' adalah dataframe, dengan kolom 'tokenize' yang berisi teks yang sudah di-tokenisasi
-data['stopword_removal'] = data['tokenize'].apply(lambda x: ' '.join(remove_stopwords(x)))
-
-# Menampilkan dataframe setelah penghapusan stopwords
-st.dataframe(data)
-
-st.write("STOPWORD")
-
-st.dataframe(data)
 
 # Inisialisasi stemmer
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
 
-def parallel_apply(data, func):
-    with mp.Pool(mp.cpu_count()) as pool:
-        result = pool.map(func, data)
-    return result
-
-# Fungsi stemming
 def stemming(text):
     return ' '.join([stemmer.stem(word) for word in text.split()])
 
-# Terapkan stemming menggunakan paralel
-data['stemming'] = parallel_apply(data['stopword_removal'].tolist(), stemming)
+# Fungsi untuk melakukan preprocessing lengkap pada input pengguna
+def preprocess_text(input_text):
+    # Apply preprocessing steps in sequence
+    input_text = remove_url(input_text)
+    input_text = remove_html(input_text)
+    input_text = remove_emoji(input_text)
+    input_text = remove_symbols(input_text)
+    input_text = remove_numbers(input_text)
+    input_text = case_folding(input_text)
+    tokens = tokenize(input_text)
+    no_stopwords = ' '.join(remove_stopwords(tokens))
+    stemmed_text = stemming(no_stopwords)
+    return stemmed_text
 
-st.write("STEMING")
+# Streamlit App
+st.title("News Classification")
 
-st.dataframe(data)
+# Input berita dari pengguna
+user_input = st.text_area("Masukkan teks berita di sini:")
 
-x = data['stemming'].values
-y = data['Kategori'].values
-
-Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
-
-st.write("Xtrain")
-st.dataframe(Xtrain)
-
-st.write("Xtest")
-st.dataframe(Xtest)
-
-st.write("Ytrain")
-st.dataframe(Ytrain)
-
-st.write("Ytest")
-st.dataframe(Ytest)
+# Proses input pengguna
+if st.button("Prediksi Kategori Berita"):
+    if user_input:
+        # Lakukan preprocessing pada input pengguna
+        preprocessed_input = preprocess_text(user_input)
+        
+        # Transformasikan input yang sudah dipreprocessing menggunakan TF-IDF vectorizer
+        transformed_input = vect.transform([preprocessed_input])
+        
+        # Lakukan prediksi menggunakan model Logistic Regression
+        prediction = model.predict(transformed_input)
+        
+        # Tampilkan hasil prediksi
+        label_mapping = {0: "Politik", 1: "Gaya Hidup"}
+        st.write(f"Kategori Prediksi: {label_mapping[prediction[0]]}")
+    else:
+        st.write("Harap masukkan teks berita untuk diprediksi.")
