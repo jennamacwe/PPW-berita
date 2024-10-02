@@ -239,9 +239,7 @@ with prepro:
     stemmer = factory.create_stemmer()
 
     def stemming(text):
-    # Stemming setiap kata tanpa menambah spasi yang tidak perlu
-        stemmed_text = ' '.join([stemmer.stem(word) for word in text.split()])
-        return stemmed_text
+        return ' '.join([stemmer.stem(word) for word in text.split()])
 
     data['stemming'] = data['stopword_removal'].apply(stemming)
     st.dataframe(data['stemming'])
