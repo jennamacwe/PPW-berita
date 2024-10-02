@@ -259,14 +259,14 @@ with prepro:
     data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
 
     # Menampilkan data
-    st.dataframe(data["stemming"])
+    st.dataframe(data1["stemming"])
 
 ############
 
     st.write("### Split Data")
 
-    x = data['stemming'].values
-    y = data['Kategori'].values
+    x = data1['stemming'].values
+    y = data1['Kategori'].values
 
     Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
 
