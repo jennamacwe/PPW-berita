@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 import re
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # stopwords
 import nltk
@@ -238,7 +239,9 @@ with prepro:
     stemmer = factory.create_stemmer()
 
     def stemming(text):
-        return ' '.join([stemmer.stem(word) for word in text])
+    # Stemming setiap kata tanpa menambah spasi yang tidak perlu
+        stemmed_text = ' '.join([stemmer.stem(word) for word in text.split()])
+        return stemmed_text
 
     data['stemming'] = data['stopword_removal'].apply(stemming)
     st.dataframe(data['stemming'])
