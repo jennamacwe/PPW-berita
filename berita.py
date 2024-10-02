@@ -242,18 +242,20 @@ with prepro:
 
 #########
 
-    data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
+    # data['stemming'] = data['stopword_removal'].apply(lambda x: ' '.join(stemming(x.split())))
 
 
     # # st.write("STEMING")
 
     # st.dataframe(data['stemming'])
 
-    # url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output.csv"
-    # data1 = pd.read_csv(url1, header=None)
+    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
+    data1 = pd.read_csv(url1, header=None)
 
-    # # Menampilkan data
-    # st.dataframe(data1[10])
+    data.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
+
+    # Menampilkan data
+    st.dataframe(data1["stemming"])
 
 ############
 
