@@ -341,7 +341,15 @@
 st.title("Prediksi Kategori Berita")
 
 # Memuat dataset
-df = pd.read_csv("Tugas-Crawling-Data-Berita-2-kategori.csv")
+url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori(1).csv"
+
+column_names = ['NO', 'Judul Berita', 'Isi Berita', 'Tanggal Berita', 'Kategori Berita']
+df = pd.read_csv(url, names=column_names, header=None)
+
+# Menampilkan data
+# st.dataframe(data)
+# df = pd.read_csv("Tugas-Crawling-Data-Berita-2-kategori.csv")
+
 df['Kategori'] = df['Kategori Berita'].map({'Politik': 0, 'Gaya Hidup': 1})
 
 # Fungsi-fungsi preprocessing
