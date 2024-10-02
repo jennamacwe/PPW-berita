@@ -478,7 +478,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from sklearn.model_selection import train_test_split
 
 # Membaca data dari URL
-url = "C:\\Users\\lenovo\\Documents\\PPW\\Tugas-Crawling-Data-Berita-2-kategori.csv"
+url = "https://raw.githubusercontent.com/jennamacwe/PPW-berita/refs/heads/main/Tugas-Crawling-Data-Berita-2-kategori.csv"
 data = pd.read_csv(url, header=None)
 
 # Menampilkan data
