@@ -964,11 +964,11 @@ with prepro:
 
     # st.dataframe(data['stemming'])
 
-    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming.csv"
+    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output.csv"
     data1 = pd.read_csv(url, header=None)
 
     # Menampilkan data
-    st.dataframe(data1)
+    st.dataframe(data1['stemming'])
 
 ############
 
