@@ -252,7 +252,7 @@ with prepro:
     url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
     data1 = pd.read_csv(url1, header=None)
 
-    data.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
+    data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
 
     # Menampilkan data
     st.dataframe(data1["stemming"])
