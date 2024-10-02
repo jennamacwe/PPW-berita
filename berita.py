@@ -735,7 +735,7 @@ st.write("Nama  : Jennatul Macwe ")
 st.write("Nim   : 210411100151 ")
 st.write("Kelas : Pencarian dan Penambangan WEB B ")
 
-data_set_description, dataset, prepro, model, Input = st.tabs(["Deskripsi Data Set", "Dataset", "Pre-processing", "Klasifikasi"])
+data_set_description, dataset, prepro, Input = st.tabs(["Deskripsi Data Set", "Dataset", "Pre-processing", "Implementasi"])
 
 with data_set_description:
     st.write("### Deskripsi Dataset")
