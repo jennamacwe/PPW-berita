@@ -214,7 +214,7 @@ with prepro:
     st.dataframe(data)
 
 
-    st.write("***3. Stop Words***")
+    st.write("***4. Stop Words***")
 
     # Download stopwords (pastikan hanya perlu sekali saja)
     nltk.download('stopwords')
@@ -232,13 +232,16 @@ with prepro:
     # Menampilkan dataframe setelah penghapusan stopwords
     st.dataframe(data['stopword_removal'])
 
-    st.write("***4. Stemming***")
+    st.write("***5. Stemming***")
 
     factory = StemmerFactory()
     stemmer = factory.create_stemmer()
 
     def stemming(text):
         return ' '.join([stemmer.stem(word) for word in text])
+
+    data['stemming'] = data['stopword_removal'].apply(stemming)
+    st.dataframe(data['stemming'])
 
 #########
 
@@ -249,20 +252,20 @@ with prepro:
 
     # st.dataframe(data['stemming'])
 
-    url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
-    data1 = pd.read_csv(url1, header=None)
+    # url1 = "https://raw.githubusercontent.com/jennamacwe/Tic-Tac-Toe/refs/heads/main/stemming_output(1).csv"
+    # data1 = pd.read_csv(url1, header=None)
 
-    data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
+    # data1.columns = ["judul berita", "isi berita", "tanggal berita", "kategori berita", "Kategori", "cleansing", "case_folding", "tokenize", "stopword_removal", "stemming"]
 
     # Menampilkan data
-    st.dataframe(data1["stemming"])
+    st.dataframe(data["stemming"])
 
 ############
 
     st.write("### Split Data")
 
-    x = data1['stemming'].values
-    y = data1['Kategori'].values
+    x = data['stemming'].values
+    y = data['Kategori'].values
 
     Xtrain, Xtest,Ytrain,Ytest = train_test_split(x,y,test_size=0.2,random_state=2)
 
